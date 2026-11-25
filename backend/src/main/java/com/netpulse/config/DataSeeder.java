@@ -5,6 +5,7 @@ import com.netpulse.domain.ProtocolType;
 import com.netpulse.repository.MonitorTargetRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +17,12 @@ public class DataSeeder implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(DataSeeder.class);
 
     private final MonitorTargetRepository targetRepository;
+    private final int serverPort;
 
-    public DataSeeder(MonitorTargetRepository targetRepository) {
+    public DataSeeder(MonitorTargetRepository targetRepository,
+                      @Value("${server.port:8080}") int serverPort) {
         this.targetRepository = targetRepository;
+        this.serverPort = serverPort;
     }
 
     @Override
@@ -28,7 +32,7 @@ public class DataSeeder implements CommandLineRunner {
         }
 
         List<MonitorTarget> initialTargets = List.of(
-                new MonitorTarget("Local Mock Target", "localhost", 8080, "/api/mock-target",
+                new MonitorTarget("Local Mock Target", "localhost", serverPort, "/api/mock-target",
                         ProtocolType.HTTP, 10, 3000),
                 new MonitorTarget("Cloudflare", "cloudflare.com", 443, "/",
                         ProtocolType.HTTPS, 10, 3000),

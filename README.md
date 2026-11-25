@@ -133,6 +133,18 @@ docker compose up --build
 
 ---
 
+## Free Cloud Deployment on Render ($0/month)
+
+This repository includes a single-container root [Dockerfile](Dockerfile) and [render.yaml](render.yaml) Blueprint that bundle the React dashboard into Spring Boot so UI, REST APIs, Swagger UI, and WebSockets all run on one free service with zero CORS setup:
+
+1. Sign in to [Render](https://dashboard.render.com) with GitHub.
+2. Click **New + → Blueprint**, select **`Chandu1133/netpulse`**, and click **Apply**.
+3. Wait ~3–5 minutes for the Docker build to finish, then open your live `https://<service>.onrender.com` URL (Swagger UI is at `/swagger-ui.html`).
+
+*(Note: Render's free tier sleeps after 15 minutes of inactivity and wakes up in ~30–50 seconds on the next visit.)*
+
+---
+
 ## 60-Second Live Chaos Demo Walkthrough
 
 1. Open **http://localhost:5173** and confirm the **Live WS Stream** pill is green.

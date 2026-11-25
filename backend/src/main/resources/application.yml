@@ -1,0 +1,50 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: netpulse-backend
+  profiles:
+    default: dev
+  threads:
+    virtual:
+      enabled: true
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+netpulse:
+  prober:
+    enabled: true
+    default-timeout-ms: 3000
+    packet-probe-attempts: 3
+    scheduler-tick-ms: 2000
+    traceroute-timeout-seconds: 15
+    traceroute-max-hops: 12
+  anomaly:
+    window-size: 20
+    warning-z-threshold: 2.0
+    critical-z-threshold: 3.0
+    warning-packet-loss-pct: 20.0
+    critical-packet-loss-pct: 50.0
+    tls-expiry-warning-days: 14
+    critical-consecutive-failures: 2
+    auto-resolve-healthy-cycles: 3
+  cors:
+    allowed-origins: http://localhost:5173,http://127.0.0.1:5173

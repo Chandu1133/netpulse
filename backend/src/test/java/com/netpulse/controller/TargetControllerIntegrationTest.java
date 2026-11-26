@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -119,5 +120,27 @@ class TargetControllerIntegrationTest {
         mockMvc.perform(get("/v3/api-docs"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info.title", is("NetPulse Network Telemetry & Anomaly Detection API")));
+
+        mockMvc.perform(get("/api/incidents"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/chaos"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/targets/1/probes"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/targets/1/traceroute?simulate=true"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.simulated", is(true)));
+
+        TargetRequest updateReq = new TargetRequest(
+                "Local Mock Target Updated", "localhost", 8080, "/api/mock-target",
+                ProtocolType.HTTP, 15, 2500, true);
+        mockMvc.perform(put("/api/targets/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateReq)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Local Mock Target Updated")));
     }
 }
